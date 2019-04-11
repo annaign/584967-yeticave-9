@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Anna Ignatenkova](https://up.htmlacademy.ru/php/9/user/584967).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Зольников](https://htmlacademy.ru/profile/id870391).
 
 ---
 
