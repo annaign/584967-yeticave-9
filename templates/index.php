@@ -27,8 +27,8 @@
                             <span class="lot__amount">Стартовая цена</span>
                             <span class="lot__cost"><?= price_format($lot['price']); ?><b class="rub">р</b></span>
                         </div>
-                        <div class="lot__timer timer">
-                            12:23
+                        <div class="lot__timer timer <?= check_time(interval_before_midnight(), 60 * 60) ? "timer--finishing" : "" ?>">
+                            <?= date_interval_format(interval_before_midnight(), "%h:%i") ?>
                         </div>
                     </div>
                 </div>
