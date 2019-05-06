@@ -7,9 +7,9 @@ CREATE DATABASE yeticave
 USE yeticave;
 
 CREATE TABLE `categories` (
-  `code` CHAR(64) NOT NULL UNIQUE,
+  `id` CHAR(64) NOT NULL UNIQUE,
   `category_title` VARCHAR(256) UNIQUE NOT NULL,
-  CONSTRAINT `categories_pkey` PRIMARY KEY (`code`)
+  CONSTRAINT `categories_pkey` PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `lots` (
@@ -22,8 +22,8 @@ CREATE TABLE `lots` (
   `lot_date_end` TIMESTAMP NOT NULL,
   `lot_step` INT NOT NULL,
   `user_id` INT UNSIGNED NOT NULL,
-  `winner_id` INT UNSIGNED NOT NULL,
-  `category_code` CHAR(64) NOT NULL,
+  `winner_id` INT UNSIGNED,
+  `category_id` CHAR(64) NOT NULL,
   CONSTRAINT `lots_pkey` PRIMARY KEY (`id`)
 );
 
@@ -44,20 +44,15 @@ CREATE TABLE `users` (
   `user_password` VARCHAR(128) NOT NULL,
   `user_avatar` VARCHAR(256),
   `user_contacts` VARCHAR(256) NOT NULL,
-  `lot_id` INT UNSIGNED,
-  `bet_id` INT UNSIGNED,
   CONSTRAINT `users_pkey` PRIMARY KEY (`id`)
 );
 
 ALTER TABLE `lots` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
-ALTER TABLE `lots` ADD FOREIGN KEY (`category_code`) REFERENCES `categories` (`code`);
+ALTER TABLE `lots` ADD FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`);
 ALTER TABLE `lots` ADD FOREIGN KEY (`winner_id`) REFERENCES `users` (`id`);
 
 ALTER TABLE `bets` ADD FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 ALTER TABLE `bets` ADD FOREIGN KEY (`lot_id`) REFERENCES `lots` (`id`);
-
-ALTER TABLE `users` ADD FOREIGN KEY (`lot_id`) REFERENCES `lots` (`id`);
-ALTER TABLE `users` ADD FOREIGN KEY (`bet_id`) REFERENCES `bets` (`id`);
 
 CREATE INDEX `lot_name` ON `lots`(`lot_title`);
 CREATE UNIQUE INDEX `email` ON `users`(`user_email`);
