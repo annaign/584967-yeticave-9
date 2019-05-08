@@ -1,4 +1,4 @@
--- DROP DATABASE IF EXISTS yeticave;
+# DROP DATABASE IF EXISTS yeticave;
 
 CREATE DATABASE yeticave
   DEFAULT CHARACTER SET utf8
@@ -56,3 +56,4 @@ ALTER TABLE bets ADD FOREIGN KEY (`lot_id`) REFERENCES lots (`id`);
 
 CREATE INDEX `lot_name` ON lots(`lot_title`);
 CREATE UNIQUE INDEX `email` ON users(`user_email`);
+CREATE FULLTEXT INDEX lot_title_and_description ON lots(`lot_title`, `lot_description`);

@@ -3,12 +3,12 @@ USE yeticave;
 # Добавление данных
 
 INSERT INTO categories (`id`, `category_title`)
-VALUES ('cat1', 'Доски и лыжи'),
-       ('cat2', 'Крепления'),
-       ('cat3', 'Ботинки'),
-       ('cat4', 'Одежда'),
-       ('cat5', 'Инструмент'),
-       ('cat6', 'Разное');
+VALUES ('boards', 'Доски и лыжи'),
+       ('attachment', 'Крепления'),
+       ('boots', 'Ботинки'),
+       ('clothing', 'Одежда'),
+       ('tools', 'Инструмент'),
+       ('other', 'Разное');
 
 INSERT INTO users (`user_email`, `user_name`, `user_password`, `user_contacts`, `user_avatar`)
 VALUES ('user1@mail.com', 'user1', 'Password1', 'user1@mail.com +7(000) 000-00-01', 'img/avatar.jpg'),
@@ -17,12 +17,13 @@ VALUES ('user1@mail.com', 'user1', 'Password1', 'user1@mail.com +7(000) 000-00-0
 
 INSERT INTO lots (`category_id`, `lot_title`, `lot_description`, `lot_image`, `lot_price_start`, `lot_step`,
   `lot_date_end`, `user_id`)
-VALUES ('cat1', '2014 Rossignol District Snowboard', 'В идеальном состоянии.', 'img/lot-1.jpg', 10999, 60, NOW() + INTERVAL 1 DAY, 1),
-       ('cat1', 'DC Ply Mens 2016/2017 Snowboard', 'Б/у.', 'img/lot-2.jpg', 159999, 150, NOW() + INTERVAL 1 DAY, 2),
-       ('cat2', 'Крепления Union Contact Pro 2015 года размер L/XL', 'Новый.', 'img/lot-3.jpg', 8000, 50, NOW() + INTERVAL 1 DAY, 3),
-       ('cat3', 'Ботинки для сноуборда DC Mutiny Charocal', '', 'img/lot-4.jpg', 10999, 80, NOW() + INTERVAL 1 DAY, 1),
-       ('cat4', 'Куртка для сноуборда DC Mutiny Charocal', '', 'img/lot-5.jpg', 7500, 50, NOW() + INTERVAL 1 DAY, 2),
-       ('cat6', 'Маска Oakley Canopy', '', 'img/lot-6.jpg', 5400, 20, NOW() + INTERVAL 1 DAY, 3);
+VALUES ('boards', '2014 Rossignol District Snowboard', 'В идеальном состоянии.', 'img/lot-1.jpg', 10999, 60, NOW() + INTERVAL 1 DAY, 1),
+       ('boards', 'DC Ply Mens 2016/2017 Snowboard', 'Б/у.', 'img/lot-2.jpg', 159999, 150, NOW() + INTERVAL 1 DAY, 2),
+       ('attachment', 'Крепления Union Contact Pro 2015 года размер L/XL', 'Новый.', 'img/lot-3.jpg', 8000, 50, NOW() + INTERVAL 1 DAY, 3),
+       ('boots', 'Ботинки для сноуборда DC Mutiny Charocal', '', 'img/lot-4.jpg', 10999, 80, NOW() + INTERVAL 1 DAY, 1),
+       ('clothing', 'Куртка для сноуборда DC Mutiny Charocal', '', 'img/lot-5.jpg', 7500, 50, NOW() + INTERVAL 1 DAY, 2),
+       ('other', 'Маска Oakley Canopy', '', 'img/lot-6.jpg', 5400, 20, NOW() + INTERVAL 1 DAY, 3),
+       ('other', 'Закрытый лот', 'Тест отображения закрытого лота', NULL, 5400, 20, NOW() - INTERVAL 1 DAY, 3);
 
 INSERT INtO bets (`user_id`, `lot_id`, `bet_price`)
 VALUES (1, 2, 100000),
@@ -44,6 +45,7 @@ SELECT `lot_title` AS "Название лота",
   FROM lots
   LEFT JOIN bets ON lots.`id` = bets.`lot_id`
   JOIN categories ON lots.`category_id` = categories.`id`
+  WHERE lots.`lot_date_end` > NOW()
   GROUP BY lots.`id`
   ORDER BY lots.`lot_date_create` DESC;
 
