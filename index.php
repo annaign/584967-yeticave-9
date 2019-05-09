@@ -1,10 +1,10 @@
 <?php
 
-// declare(strict_types=1);
+declare(strict_types=1);
 
 require_once './init.php';
-//require_once './data.php';
 
+$user_name = 'User';
 $is_auth = rand(0, 1);
 
 // --- Получение данных ---
