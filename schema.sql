@@ -16,7 +16,7 @@ CREATE TABLE users (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_date_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_email` VARCHAR(128) UNIQUE NOT NULL,
-  `user_name` VARCHAR(256) UNIQUE NOT NULL,
+  `user_name` VARCHAR(256) NOT NULL,
   `user_password` VARCHAR(128) NOT NULL,
   `user_contacts` VARCHAR(256) NOT NULL,
   `user_avatar` VARCHAR(256),
@@ -54,6 +54,5 @@ CREATE TABLE bets (
 ALTER TABLE bets ADD FOREIGN KEY (`user_id`) REFERENCES users (`id`);
 ALTER TABLE bets ADD FOREIGN KEY (`lot_id`) REFERENCES lots (`id`);
 
-CREATE INDEX `lot_name` ON lots(`lot_title`);
 CREATE UNIQUE INDEX `email` ON users(`user_email`);
 CREATE FULLTEXT INDEX lot_title_and_description ON lots(`lot_title`, `lot_description`);
