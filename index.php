@@ -1,24 +1,18 @@
 <?php
 
-require_once './data.php';
-require './helpers.php';
+// declare(strict_types=1);
+
+require_once './init.php';
+//require_once './data.php';
 
 $is_auth = rand(0, 1);
 
-function price_format($number)
-{
-    return number_format(ceil($number), 0, ',', ' ');
-}
+// --- Получение данных ---
 
-function interval_before_midnight()
-{
-    return date_diff(date_create("now"), date_create("tomorrow midnight"));
-}
+$categories = get_categories($link);
+$lots = get_lots($link);
 
-function check_time($interval, int $sec_time): bool
-{
-    return ($interval->h * 60 * 60 + $interval->i * 60 + $interval->s <= $sec_time);
-}
+// --- Сборка главной страницы ---
 
 $content = include_template('./index.php', [
     'categories' => $categories,
