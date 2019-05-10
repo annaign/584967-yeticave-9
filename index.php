@@ -21,6 +21,7 @@ $content = include_template('./index.php', [
 
 $layout = include_template('./layout.php', [
     'title' => "Главная",
+    'main_page_wrap' => "container",
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'content' => $content,
