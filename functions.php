@@ -33,7 +33,7 @@ function get_categories(mysqli $link): array
 //Возвращает массив с открытыми лотами
 function get_lots(mysqli $link): array
 {
-    $sql = "SELECT lot_title, lot_price_start, lot_image, category_title
+    $sql = "SELECT lots.id AS id, lot_title, lot_price_start, lot_image, category_title
             FROM lots
             JOIN categories ON lots.category_id = categories.id
             WHERE lots.lot_date_end > NOW()
@@ -50,4 +50,35 @@ function get_lots(mysqli $link): array
     $error_page = include_template('./error.php', ['error' => $error]);
     print($error_page);
     die();
+}
+
+//Возвращает лот по его id
+function get_lot_by_id(mysqli $link, int $id): ?array
+{
+    $sql = "SELECT category_title, lot_title, lot_description, lot_price_start, lot_date_end, lot_image, lot_step,
+            MAX(bet_price) as bet_price, lots.id
+            FROM lots
+            JOIN categories ON lots.category_id = categories.id
+            LEFT JOIN bets ON lots.id = bets.lot_id
+            WHERE lots.id = '$id'";
+
+    $lot = mysqli_fetch_assoc(mysqli_query($link, $sql));
+
+    if ($lot !== false) {
+        if ($lot['id'] === NULL) {
+            header("Location: /pages/404.html");
+        }
+        return $lot;
+    }
+
+    $error = mysqli_error($link);
+    $error_page = include_template('./error.php', ['error' => $error]);
+    print($error_page);
+    die();
+}
+
+function interval_before_close($time_before)
+{
+    //TODO: доделать
+    return date_diff(date_create("now"), date_create("tomorrow midnight"));
 }
