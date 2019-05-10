@@ -22,6 +22,10 @@ $lot = get_lot_by_id($link, $id);
 
 // --- Сборка страницы с лотом ---
 
+$menu_lot = include_template('./menu_lot.php', [
+    'categories' => $categories
+]);
+
 $content = include_template('./lot.php', [
     'categories' => $categories,
     'lot' => $lot,
@@ -32,6 +36,7 @@ $layout = include_template('./layout.php', [
     'main_page_wrap' => "",
     'is_auth' => $is_auth,
     'user_name' => $user_name,
+    'menu' => $menu_lot,
     'content' => $content,
     'categories' => $categories,
 ]);
