@@ -102,7 +102,20 @@ function get_lot_by_id(mysqli $link, int $id): ?array
     die();
 }
 
-function interval_before_close($time_close)
+function interval_before_close(string $time_close): string
 {
-    return date_diff(date_create("now"), date_create($time_close));
+    $seconds_in_hour = 60 * 60;
+    $seconds_before_close = strtotime($time_close) - time();
+
+    $hours = floor($seconds_before_close / $seconds_in_hour);
+    $minutes = floor(($seconds_before_close % $seconds_in_hour) / 60);
+
+    return "$hours:$minutes";
+}
+
+function check_time2(string $interval, int $limit_time_in_sec): bool
+{
+    $seconds_before_close = strtotime($interval) - time();
+
+    return $seconds_before_close - $limit_time_in_sec <= 0;
 }

@@ -10,8 +10,8 @@
         </div>
         <div class="lot-item__right">
             <div class="lot-item__state">
-                <div class="lot-item__timer timer <?= check_time(interval_before_close($lot['lot_date_end']), 60 * 60) ? "timer--finishing" : "" ?>">
-                    <?= date_interval_format(interval_before_close($lot['lot_date_end']), "%h:%i") ?>
+                <div class="lot-item__timer timer <?= check_time2($lot['lot_date_end'], 60 * 60) ? "timer--finishing" : "" ?>">
+                    <?= interval_before_close($lot['lot_date_end']); ?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
