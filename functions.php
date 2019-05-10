@@ -1,5 +1,29 @@
 <?php
 
+//Получение записей из БД
+function db_fetch_data($link, $sql, $data = [])
+{
+    $result = [];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $result;
+}
+
+//Добавление новой записи в БД
+function db_insert_data($link, $sql, $data = [])
+{
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $result = mysqli_insert_id($link);
+    }
+    return $result;
+}
+
 function price_format($number)
 {
     return number_format(ceil($number), 0, ',', ' ');
@@ -60,9 +84,10 @@ function get_lot_by_id(mysqli $link, int $id): ?array
             FROM lots
             JOIN categories ON lots.category_id = categories.id
             LEFT JOIN bets ON lots.id = bets.lot_id
-            WHERE lots.id = '$id'";
+            WHERE lots.id = ?";
 
-    $lot = mysqli_fetch_assoc(mysqli_query($link, $sql));
+    $lot = db_fetch_data($link, $sql, [$id]);
+    $lot = $lot[0] ?? NULL;
 
     if ($lot !== false) {
         if ($lot['id'] === NULL) {
@@ -77,8 +102,7 @@ function get_lot_by_id(mysqli $link, int $id): ?array
     die();
 }
 
-function interval_before_close($time_before)
+function interval_before_close($time_close)
 {
-    //TODO: доделать
-    return date_diff(date_create("now"), date_create("tomorrow midnight"));
+    return date_diff(date_create("now"), date_create($time_close));
 }
