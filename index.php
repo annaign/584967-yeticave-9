@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare (strict_types = 1);
 
 require_once './init.php';
 
@@ -14,6 +14,10 @@ $lots = get_lots($link);
 
 // --- Сборка главной страницы ---
 
+$menu_main = include_template('./menu_main.php', [
+    'categories' => $categories
+]);
+
 $content = include_template('./index.php', [
     'categories' => $categories,
     'lots' => $lots,
@@ -21,8 +25,10 @@ $content = include_template('./index.php', [
 
 $layout = include_template('./layout.php', [
     'title' => "Главная",
+    'main_page_wrap' => "container",
     'is_auth' => $is_auth,
     'user_name' => $user_name,
+    'menu' => $menu_main,
     'content' => $content,
     'categories' => $categories,
 ]);

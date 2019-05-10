@@ -1,5 +1,29 @@
 <?php
 
+//Получение записей из БД
+function db_fetch_data($link, $sql, $data = [])
+{
+    $result = [];
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($res) {
+        $result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $result;
+}
+
+//Добавление новой записи в БД
+function db_insert_data($link, $sql, $data = [])
+{
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $result = mysqli_insert_id($link);
+    }
+    return $result;
+}
+
 function price_format($number)
 {
     return number_format(ceil($number), 0, ',', ' ');
@@ -33,7 +57,7 @@ function get_categories(mysqli $link): array
 //Возвращает массив с открытыми лотами
 function get_lots(mysqli $link): array
 {
-    $sql = "SELECT lot_title, lot_price_start, lot_image, category_title
+    $sql = "SELECT lots.id AS id, lot_title, lot_price_start, lot_image, category_title
             FROM lots
             JOIN categories ON lots.category_id = categories.id
             WHERE lots.lot_date_end > NOW()
@@ -50,4 +74,48 @@ function get_lots(mysqli $link): array
     $error_page = include_template('./error.php', ['error' => $error]);
     print($error_page);
     die();
+}
+
+//Возвращает лот по его id
+function get_lot_by_id(mysqli $link, int $id): ?array
+{
+    $sql = "SELECT category_title, lot_title, lot_description, lot_price_start, lot_date_end, lot_image, lot_step,
+            MAX(bet_price) as bet_price, lots.id
+            FROM lots
+            JOIN categories ON lots.category_id = categories.id
+            LEFT JOIN bets ON lots.id = bets.lot_id
+            WHERE lots.id = ?";
+
+    $lot = db_fetch_data($link, $sql, [$id]);
+    $lot = $lot[0] ?? NULL;
+
+    if ($lot !== false) {
+        if ($lot['id'] === NULL) {
+            header("Location: /pages/404.html");
+        }
+        return $lot;
+    }
+
+    $error = mysqli_error($link);
+    $error_page = include_template('./error.php', ['error' => $error]);
+    print($error_page);
+    die();
+}
+
+function interval_before_close(string $time_close): string
+{
+    $seconds_in_hour = 60 * 60;
+    $seconds_before_close = strtotime($time_close) - time();
+
+    $hours = floor($seconds_before_close / $seconds_in_hour);
+    $minutes = floor(($seconds_before_close % $seconds_in_hour) / 60);
+
+    return "$hours:$minutes";
+}
+
+function check_time2(string $interval, int $limit_time_in_sec): bool
+{
+    $seconds_before_close = strtotime($interval) - time();
+
+    return $seconds_before_close - $limit_time_in_sec <= 0;
 }
