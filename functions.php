@@ -61,7 +61,6 @@ function get_lots(mysqli $link): array
             FROM lots
             JOIN categories ON lots.category_id = categories.id
             WHERE lots.lot_date_end > NOW()
-            GROUP BY lots.id
             ORDER BY lots.lot_date_create DESC";
 
     $lots = mysqli_fetch_all(mysqli_query($link, $sql), MYSQLI_ASSOC);
