@@ -15,7 +15,7 @@
         <header class="main-header">
             <div class="main-header__container container">
                 <h1 class="visually-hidden">YetiCave</h1>
-                <a class="main-header__logo">
+                <a class="main-header__logo" <?= isset($main_page) ? '' : 'href="index.php"'; ?>>
                     <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
                 </a>
                 <form class="main-header__search" method="get" action="https://echo.htmlacademy.ru" autocomplete="off">
@@ -45,7 +45,7 @@
             </div>
         </header>
 
-        <main class="<?= $main_page_wrap; ?>">
+        <main class="<?= isset($main_page) ? 'container' : ''; ?>">
             <?= $menu; ?>
             <?= $content; ?>
         </main>

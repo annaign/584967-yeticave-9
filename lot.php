@@ -34,7 +34,6 @@ $content = include_template('./lot.php', [
 $layout = include_template('./layout.php', [
     'title' => $lot['lot_title'],
     'add_lot_style' => "",
-    'main_page_wrap' => "",
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'menu' => $menu_general,

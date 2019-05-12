@@ -161,7 +161,6 @@ $menu_general = include_template('./menu_general.php', [
 $layout = include_template('./layout.php', [
     'title' => "Добавление лота",
     'add_lot_style' => '<link href="../css/flatpickr.min.css" rel="stylesheet">',
-    'main_page_wrap' => "",
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'menu' => $menu_general,
