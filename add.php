@@ -56,10 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $file_type = finfo_file($finfo, $_FILES['lot-img']['tmp_name']);
 
         if ($file_type !== "image/jpeg" && $file_type !== "image/png") {
+            $lot_errors['lot-img'] = true;
             $errors_message['lot-img'] = "Загрузите изображение в формате .png или .jpeg)";
         }
-
-        $new_lot['lot-img'] =  $_FILES['lot-img']['name'];
     }
 
     //проверка: начальная цена lot_price_start
@@ -88,7 +87,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //проверка: дата завершения lot_date_end
     $new_lot['lot-date'] = trim($new_lot['lot-date']);
-
     if (!is_date_valid($new_lot['lot-date'])) {
         $lot_errors['lot-date'] = true;
     } elseif (new DateTime($new_lot['lot-date']) < new DateTime()) {

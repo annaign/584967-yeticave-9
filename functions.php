@@ -83,7 +83,8 @@ function get_lot_by_id(mysqli $link, int $id): ?array
             FROM lots
             JOIN categories ON lots.category_id = categories.id
             LEFT JOIN bets ON lots.id = bets.lot_id
-            WHERE lots.id = ?";
+            WHERE lots.id = ?
+            GROUP BY lots.id, category_title, lot_title, lot_description, lot_price_start, lot_date_end, lot_image, lot_step";
 
     $lot = db_fetch_data($link, $sql, [$id]);
     $lot = $lot[0] ?? NULL;
