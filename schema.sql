@@ -17,7 +17,7 @@ CREATE TABLE users (
   `user_date_create` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user_email` VARCHAR(128) UNIQUE NOT NULL,
   `user_name` VARCHAR(256) NOT NULL,
-  `user_password` VARCHAR(128) NOT NULL,
+  `user_password` VARCHAR(256) NOT NULL,
   `user_contacts` VARCHAR(256) NOT NULL,
   `user_avatar` VARCHAR(256),
   CONSTRAINT `users_pkey` PRIMARY KEY (`id`)
