@@ -1,29 +1,28 @@
 <?php
 
 declare (strict_types = 1);
+
 require_once './init.php';
+
+$user_name = 'User';
+$is_auth = rand(0, 1);
 
 // --- Получение данных ---
 
 $categories = get_categories($link);
-$lots = get_lots($link);
 
 // --- Сборка главной страницы ---
 
-$menu_main = include_template('./menu_main.php', [
+$menu_general = include_template('./menu_general.php', [
     'categories' => $categories
 ]);
 
-$content = include_template('./index.php', [
-    'categories' => $categories,
-    'lots' => $lots,
-]);
+$content = include_template('./403.php', []);
 
 $layout = include_template('./layout.php', [
-    'title' => "Главная",
-    'main_page' => true,
+    'title' => "403 Доступ к странице запрещен",
     'session_user' => $session_user,
-    'menu' => $menu_main,
+    'menu' => $menu_general,
     'content' => $content,
     'categories' => $categories,
 ]);

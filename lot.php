@@ -1,11 +1,7 @@
 <?php
 
 declare (strict_types = 1);
-
 require_once './init.php';
-
-$user_name = 'User';
-$is_auth = rand(0, 1);
 
 // --- Получение данных ---
 
@@ -28,14 +24,13 @@ $menu_general = include_template('./menu_general.php', [
 
 $content = include_template('./lot.php', [
     'categories' => $categories,
+    'session_user' => $session_user,
     'lot' => $lot,
 ]);
 
 $layout = include_template('./layout.php', [
     'title' => $lot['lot_title'],
-    'add_lot_style' => "",
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'session_user' => $session_user,
     'menu' => $menu_general,
     'content' => $content,
     'categories' => $categories,

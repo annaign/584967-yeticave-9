@@ -1,12 +1,7 @@
 <?php
 
 declare (strict_types = 1);
-
 require_once './init.php';
-
-$user_name = 'User';
-$is_auth = rand(0, 1);
-$user_id = 1;
 
 // --- Получение данных из БД ---
 
@@ -80,8 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $new_user_id =  db_insert_data($link, $sql, [
             $new_user['email'],
-            $new_user['password'],
             $new_user['name'],
+            $new_user['password'],
             $new_user['message'],
         ]);
 
@@ -111,9 +106,7 @@ $menu_general = include_template('./menu_general.php', [
 
 $layout = include_template('./layout.php', [
     'title' => "Регистрация",
-    'add_lot_style' => '<link href="../css/flatpickr.min.css" rel="stylesheet">',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'session_user' => $session_user,
     'menu' => $menu_general,
     'content' => $content,
     'categories' => $categories,
