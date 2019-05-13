@@ -74,22 +74,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //сохранение нового пользователя в БД
 
         $new_user['password'] = password_hash($new_user['password'], PASSWORD_DEFAULT);
-        $new_user['avatar'] = null; //TODO: нет поля для загрузки файла на странице
 
-        $sql = "INSERT INTO users (user_date_create, user_email, user_name, user_password, user_contacts, user_avatar)
-                VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (user_date_create, user_email, user_name, user_password, user_contacts)
+                VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?)";
 
         $new_user_id =  db_insert_data($link, $sql, [
             $new_user['email'],
             $new_user['password'],
             $new_user['name'],
             $new_user['message'],
-            $new_user['avatar'],
         ]);
 
         //при успешном сохранении формы, переадресация на страницу входа
         if ($new_user_id) {
             header('Location: /login.php');
+            exit();
         }
 
         $error = "Ошибка при добавление лота в БД";
