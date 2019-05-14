@@ -1,12 +1,12 @@
 <?php
 
 declare (strict_types = 1);
-
 require_once './init.php';
 
-$user_name = 'User';
-$is_auth = rand(0, 1);
-$user_id = 1;
+if (!isset($_SESSION['user'])) {
+    header("Location: /403.php");
+    exit();
+}
 
 // --- Получение данных из БД ---
 
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $new_lot['lot-rate'],
             $new_lot['lot-step'],
             $new_lot['lot-date'],
-            $user_id,
+            $_SESSION['user'],
         ]);
 
         //при успешном сохранении формы, переадресация на страницу нового лота
@@ -161,8 +161,7 @@ $menu_general = include_template('./menu_general.php', [
 $layout = include_template('./layout.php', [
     'title' => "Добавление лота",
     'add_lot_style' => '<link href="../css/flatpickr.min.css" rel="stylesheet">',
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
+    'session_user' => $session_user,
     'menu' => $menu_general,
     'content' => $content,
     'categories' => $categories,
