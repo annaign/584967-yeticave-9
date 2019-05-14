@@ -77,11 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'user' => $user,
             ]);
         }
-
-        $error = "Ошибка при поиске пользователя в БД";
-        $error_page = include_template('./error.php', ['error' => $error]);
-        print($error_page);
-        die();
     }
 } else {
     $content = include_template('./login.php', [
