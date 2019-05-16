@@ -10,16 +10,14 @@ $categories = get_categories($link);
 if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
 } else {
-    header("Location: /pages/404.html");
-    exit();
+    page_404();
 }
 
 $lot = get_lot_by_id($link, $id);
 
 //проверить лот: открыт на текущий момент?
 if (strtotime($lot['lot_date_end']) - time() <= 0) {
-    header("Location: /pages/404.html");
-    exit();
+    page_404();
 }
 
 $lot_bets = get_bets_by_lot_id($link, $id);

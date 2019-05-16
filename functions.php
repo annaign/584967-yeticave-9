@@ -91,7 +91,7 @@ function get_lot_by_id(mysqli $link, int $id): ?array
 
     if ($lot !== false) {
         if ($lot['id'] === NULL) {
-            header("Location: /pages/404.html");
+            page_404();
         }
         return $lot;
     }
@@ -198,3 +198,9 @@ function format_bet_date(string $date): string
     }
     return $bet_date;
 };
+
+
+function page_404() {
+    header("Location: /404.php");
+    exit();
+}
