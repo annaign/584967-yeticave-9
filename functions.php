@@ -102,20 +102,99 @@ function get_lot_by_id(mysqli $link, int $id): ?array
     die();
 }
 
-function interval_before_close(string $time_close): string
+function get_bets_by_user_id(mysqli $link, int $user_id): ?array
+{
+    $sql = "SELECT lots.id as lot_id, lots.lot_image, lots.lot_title, users.user_contacts, categories.category_title,
+            lots.lot_date_end, bets.user_id, lots.winner_id, bets.bet_price, bets.bet_date_create
+            FROM bets
+            JOIN users ON users.id = bets.user_id
+            JOIN lots ON lots.id = bets.lot_id
+            JOIN categories ON categories.id = lots.category_id
+            WHERE bets.user_id = ?
+            ORDER BY bets.bet_date_create DESC";
+
+    $bets = db_fetch_data($link, $sql, [$user_id]);
+
+    if ($bets !== false) {
+        return $bets;
+    }
+
+    $error = mysqli_error($link);
+    $error_page = include_template('./error.php', ['error' => $error]);
+    print($error_page);
+    die();
+}
+
+function get_bets_by_lot_id(mysqli $link, $id)
+{
+
+    $sql = "SELECT users.user_name, bets.bet_price, bets.bet_date_create
+            FROM bets
+            JOIN users ON users.id = bets.user_id
+            WHERE bets.lot_id = ?
+            ORDER BY bets.bet_date_create DESC";
+
+    $lot_bets = db_fetch_data($link, $sql, [$id]);
+
+    if ($lot_bets !== false) {
+        return $lot_bets;
+    }
+
+    return [];
+}
+
+function interval_before_close(string $time_close, $full_time = false): string
 {
     $seconds_in_hour = 60 * 60;
     $seconds_before_close = strtotime($time_close) - time();
 
     $hours = floor($seconds_before_close / $seconds_in_hour);
     $minutes = floor(($seconds_before_close % $seconds_in_hour) / 60);
+    $days = floor($seconds_before_close / ($seconds_in_hour * 24));
+
+    if ($hours < 10) {
+        $hours = '0' . $hours;
+    }
+    if ($minutes < 10) {
+        $minutes = '0' . $minutes;
+    }
+
+    if ($full_time) {
+        return "$days:$hours:$minutes";
+    }
 
     return "$hours:$minutes";
 }
 
-function check_time2(string $interval, int $limit_time_in_sec): bool
+function check_time2(string $moment, int $limit_time_in_sec = null): bool
 {
-    $seconds_before_close = strtotime($interval) - time();
+    if (!$limit_time_in_sec) {
+        return time() - strtotime($moment) > 0;
+    }
 
-    return $seconds_before_close - $limit_time_in_sec <= 0;
+    $seconds_before_close = strtotime($moment) - time();
+
+    return $seconds_before_close > 0 && $seconds_before_close <= $limit_time_in_sec;
 }
+
+function format_bet_date(string $date): string
+{
+    $bet_date = '';
+    $date_rates = strtotime($date);
+    $date_now = strtotime('now');
+    $date_today = strtotime('today midnight');
+    $date_yesterday = strtotime('yesterday midnight');
+    $date_diff = $date_now - $date_rates;
+    $diff_hour = floor($date_diff / 3600);
+    $diff_min = floor($date_diff / 60);
+    if ($date_yesterday < $date_rates and $date_today > $date_rates) {
+        $bet_date = 'Вчера, ' . date('G:i', $date_rates);
+    } elseif ($diff_hour > 0 and $date_rates > $date_today) {
+        $bet_date = $diff_hour . ' ' . get_noun_plural_form((int)$diff_hour, 'час', 'часа', 'часов') . ' назад';
+    } elseif ($date_now - 3600 < $date_rates) {
+        $bet_date = $diff_min . ' ' . get_noun_plural_form((int)$diff_min, 'минута', 'минуты', 'минут') . ' назад';
+    } elseif ($date_rates < $date_yesterday) {
+        $bet_date = date('d.m.y в G:i', $date_rates);
+    }
+    return $bet_date;
+};
