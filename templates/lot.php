@@ -36,7 +36,7 @@
                 <?php endif; ?>
             </div>
             <div class="history">
-                <?php if (count($lot_bets) > 0) : ?>
+                <?php if (isset($lot_bets) && count($lot_bets) > 0) : ?>
                     <h3>История ставок (<span><?= count($lot_bets) ?></span>)</h3>
                     <table class="history__list">
                         <?php foreach ($lot_bets as $bet) : ?>
