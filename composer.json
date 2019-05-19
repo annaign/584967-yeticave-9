@@ -1,0 +1,6 @@
+{
+    "name": "anna/584967-yeticave-9",
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
