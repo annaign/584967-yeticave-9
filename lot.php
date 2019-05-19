@@ -14,12 +14,6 @@ if (isset($_GET['id'])) {
 }
 
 $lot = get_lot_by_id($link, $id);
-
-//проверить лот: открыт на текущий момент?
-if (strtotime($lot['lot_date_end']) - time() <= 0) {
-    page_404();
-}
-
 $lot_bets = get_bets_by_lot_id($link, $id);
 
 //массив ошибок при заполнении формы
