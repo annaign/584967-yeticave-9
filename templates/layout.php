@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title><?= $title; ?></title>
+    <title><?= $title ?></title>
     <link href="../css/normalize.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <?= isset($add_lot_style) ? $add_lot_style : '' ?>
@@ -15,7 +15,7 @@
         <header class="main-header">
             <div class="main-header__container container">
                 <h1 class="visually-hidden">YetiCave</h1>
-                <a class="main-header__logo" <?= isset($main_page) ? '' : 'href="index.php"'; ?>>
+                <a class="main-header__logo" <?= isset($main_page) ? '' : 'href="index.php"' ?>>
                     <img src="../img/logo.svg" width="160" height="39" alt="Логотип компании YetiCave">
                 </a>
                 <form class="main-header__search" method="get" action="/search.php" autocomplete="off">
@@ -45,9 +45,9 @@
             </div>
         </header>
 
-        <main class="<?= isset($main_page) ? 'container' : ''; ?>">
-            <?= $menu; ?>
-            <?= $content; ?>
+        <main class="<?= isset($main_page) ? 'container' : '' ?>">
+            <?= $menu ?>
+            <?= $content ?>
         </main>
     </div>
 

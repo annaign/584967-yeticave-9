@@ -4,7 +4,7 @@
         <div class="form__item <?= isset($lot_errors['lot-name']) ? 'form__item--invalid' : '' ?>">
             <label for="lot-name">Наименование <sup>*</sup></label>
             <?php $value = isset($new_lot['lot-name']) ? $new_lot['lot-name'] : '' ?>
-            <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота" value="<?= $value; ?>">
+            <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота" value="<?= $value ?>">
             <span class="form__error"><?= $errors_message['lot-name'] ?></span>
         </div>
         <div class="form__item <?= isset($lot_errors['category']) ? 'form__item--invalid' : '' ?>">
@@ -13,7 +13,7 @@
                 <option value="">Выберите категорию</option>
                 <?php foreach ($categories as $category) :
                     $selected = '';
-                    if (isset($new_lot['category']) and ($category['id'] === $new_lot['category'])) {
+                    if (isset($new_lot['category']) && ($category['id'] === $new_lot['category'])) {
                         $selected = ' selected';
                     } ?>
                     <option value="<?= $category['id'] ?>" <?= $selected ?>><?= htmlspecialchars($category['category_title']) ?></option>

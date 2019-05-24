@@ -10,10 +10,10 @@ $categories = get_categories($link);
 //массив ошибок при заполнении формы
 $registration_errors = [];
 $errors_message = [
-    'email' => "Введите e-mail",
-    'password' => "Введите пароль",
-    'name' => "Введите имя",
-    'message' => "Напишите как с вами связаться",
+    'email' => 'Введите e-mail',
+    'password' => 'Введите пароль',
+    'name' => 'Введите имя',
+    'message' => 'Напишите как с вами связаться',
 ];
 
 // --- Получение данных из формы ---
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         }
 
-        $error = "Ошибка при добавление лота в БД";
+        $error = 'Ошибка при добавление лота в БД';
         $error_page = include_template('./error.php', ['error' => $error]);
         print($error_page);
         die();
@@ -105,7 +105,7 @@ $menu_general = include_template('./menu_general.php', [
 ]);
 
 $layout = include_template('./layout.php', [
-    'title' => "Регистрация",
+    'title' => 'Регистрация',
     'session_user' => $session_user,
     'menu' => $menu_general,
     'content' => $content,

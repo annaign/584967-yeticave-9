@@ -20,9 +20,9 @@ $sql = "SELECT lots.id AS id_lot, lots.lot_title, bets.bet_price, users.user_nam
 $new_winners = db_fetch_data($link, $sql, []);
 
 //конфигурация транспорта
-$transport = new Swift_SmtpTransport("smtp.mailtrap.io", 2525);
-$transport->setUsername("40357ba10b6fbf");
-$transport->setPassword("5f3a4324fa0b3c");
+$transport = new Swift_SmtpTransport('smtp.mailtrap.io', 2525);
+$transport->setUsername('40357ba10b6fbf');
+$transport->setPassword('5f3a4324fa0b3c');
 
 // для отправки сообщения
 $mailer = new Swift_Mailer($transport);
@@ -43,7 +43,7 @@ if ($new_winners !== false) {
 
         // формирование сообщения
         $message = new Swift_Message();
-        $message->setSubject("Ваша ставка победила!");
+        $message->setSubject('Ваша ставка победила!');
         $message->setFrom(['keks@phpdemo.ru' => '584967-yeticave-9']);
         $message->setBcc($recipients);
 

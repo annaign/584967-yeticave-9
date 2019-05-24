@@ -4,7 +4,7 @@ declare (strict_types = 1);
 require_once './init.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /403.php");
+    header('Location: /403.php');
     exit();
 }
 
@@ -15,13 +15,13 @@ $categories = get_categories($link);
 //массив ошибок при заполнении формы
 $lot_errors = [];
 $errors_message = [
-    'lot-name' => "Введите наименование лота",
-    'category' => "Выберите категорию",
-    'message' => "Напишите описание лота",
-    'lot-img' => "Не загружен файл",
-    'lot-rate' => "Введите начальную цену",
-    'lot-step' => "Введите шаг ставки",
-    'lot-date' => "Введите дату завершения торгов",
+    'lot-name' => 'Введите наименование лота',
+    'category' => 'Выберите категорию',
+    'message' => 'Напишите описание лота',
+    'lot-img' => 'Не загружен файл',
+    'lot-rate' => 'Введите начальную цену',
+    'lot-step' => 'Введите шаг ставки',
+    'lot-date' => 'Введите дату завершения торгов',
 ];
 
 // --- Получение данных из формы ---
@@ -55,9 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($finfo, $_FILES['lot-img']['tmp_name']);
 
-        if ($file_type !== "image/jpeg" && $file_type !== "image/png") {
+        if ($file_type !== 'image/jpeg' && $file_type !== 'image/png') {
             $lot_errors['lot-img'] = true;
-            $errors_message['lot-img'] = "Загрузите изображение в формате .png или .jpeg)";
+            $errors_message['lot-img'] = 'Загрузите изображение в формате .png или .jpeg)';
         }
     }
 
@@ -66,10 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_numeric($new_lot['lot-rate'])) {
         $lot_errors['lot-rate'] = true;
     } else {
-        $new_lot['lot-rate'] = (int)($new_lot['lot-rate']);
+        $new_lot['lot-rate'] = (int)$new_lot['lot-rate'];
         if ($new_lot['lot-rate'] <= 0) {
             $lot_errors['lot-rate'] = true;
-            $errors_message['lot-rate'] = "Введите целое положительное число";
+            $errors_message['lot-rate'] = 'Введите целое положительное число';
         }
     }
 
@@ -78,10 +78,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!is_numeric($new_lot['lot-step'])) {
         $lot_errors['lot-step'] = true;
     } else {
-        $new_lot['lot-step'] = (int)($new_lot['lot-step']);
+        $new_lot['lot-step'] = (int)$new_lot['lot-step'];
         if ($new_lot['lot-step'] <= 0) {
             $lot_errors['lot-step'] = true;
-            $errors_message['lot-step'] = "Введите целое положительное число";
+            $errors_message['lot-step'] = 'Введите целое положительное число';
         }
     }
 
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $lot_errors['lot-date'] = true;
     } elseif (new DateTime($new_lot['lot-date']) < new DateTime()) {
         $lot_errors['lot-date'] = true;
-        $errors_message['lot-date'] = "Введите будущую дату";
+        $errors_message['lot-date'] = 'Введите будущую дату';
     }
 
     if (count($lot_errors)) {
@@ -108,9 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $file_path = 'uploads/';
 
         if ($file_type === 'image/jpeg') {
-            $file_name = uniqid() . '.jpg';
+            $file_name = uniqid('', true) . '.jpg';
         } else {
-            $file_name = uniqid() . '.png';
+            $file_name = uniqid('', true) . '.png';
         }
 
         //файл изображения перенести в публичную директорию и сохранить ссылку
@@ -118,9 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $new_lot['lot-img'] = $file_path . $file_name;
 
 
-        $sql = "INSERT INTO lots
+        $sql = 'INSERT INTO lots
         (lot_date_create, category_id, lot_title, lot_description, lot_image, lot_price_start, lot_step, lot_date_end, user_id)
-        VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?)";
+        VALUES (CURRENT_TIMESTAMP, ?, ?, ?, ?, ?, ?, ?, ?)';
 
         $new_lot_id =  db_insert_data($link, $sql, [
             $new_lot['category'],
@@ -135,11 +135,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         //при успешном сохранении формы, переадресация на страницу нового лота
         if ($new_lot_id) {
-            header("Location: /lot.php?id=" . $new_lot_id);
+            header('Location: /lot.php?id=' . $new_lot_id);
             exit;
         }
 
-        $error = "Ошибка при добавление лота в БД";
+        $error = 'Ошибка при добавление лота в БД';
         $error_page = include_template('./error.php', ['error' => $error]);
         print($error_page);
         die();
@@ -159,7 +159,7 @@ $menu_general = include_template('./menu_general.php', [
 ]);
 
 $layout = include_template('./layout.php', [
-    'title' => "Добавление лота",
+    'title' => 'Добавление лота',
     'add_lot_style' => '<link href="../css/flatpickr.min.css" rel="stylesheet">',
     'session_user' => $session_user,
     'menu' => $menu_general,

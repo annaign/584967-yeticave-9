@@ -20,7 +20,7 @@ $content = include_template('./index.php', [
 ]);
 
 $layout = include_template('./layout.php', [
-    'title' => "Главная",
+    'title' => 'Главная',
     'main_page' => true,
     'session_user' => $session_user,
     'menu' => $menu_main,

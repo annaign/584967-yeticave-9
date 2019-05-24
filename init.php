@@ -4,7 +4,7 @@ require_once './vendor/autoload.php';
 require_once './helpers.php';
 require_once './functions.php';
 
-$link = mysqli_connect("localhost", "root", "", "yeticave");
+$link = mysqli_connect('localhost', 'root', '', 'yeticave');
 
 if ($link === false) {
     $error = mysqli_connect_error();
@@ -13,7 +13,7 @@ if ($link === false) {
     die();
 }
 
-mysqli_set_charset($link, "utf8");
+mysqli_set_charset($link, 'utf8');
 
 session_start();
 if (isset($_SESSION['user'])) {

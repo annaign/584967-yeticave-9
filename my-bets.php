@@ -4,7 +4,7 @@ declare (strict_types = 1);
 require_once './init.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /403.php");
+    header('Location: /403.php');
     exit();
 }
 
@@ -25,7 +25,7 @@ $content = include_template('./my-bets.php', [
 ]);
 
 $layout = include_template('./layout.php', [
-    'title' => "Добавление лота",
+    'title' => 'Добавление лота',
     'add_lot_style' => '<link href="../css/flatpickr.min.css" rel="stylesheet">',
     'session_user' => $session_user,
     'menu' => $menu_general,

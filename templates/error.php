@@ -8,6 +8,6 @@
 
 <body>
     <div class="page-wrapper">
-        <p>Ошибка: <?= $error; ?></p>
+        <p>Ошибка: <?= $error ?></p>
     </div>
 </body>

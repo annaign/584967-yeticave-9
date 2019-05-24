@@ -1,7 +1,15 @@
 <?php
 
-//Получение записей из БД
-function db_fetch_data($link, $sql, $data = [])
+/**
+ * Безопасное получение записей из БД
+ *
+ * @param mysqli $link Объект, представляющий подключение к серверу MySQL
+ * @param string $sql Запрос к БД
+ * @param array $data Данные
+ *
+ * @return array Записи из БД
+ */
+function db_fetch_data(mysqli $link, string $sql, array $data = []): array
 {
     $result = [];
     $stmt = db_get_prepare_stmt($link, $sql, $data);
@@ -13,33 +21,63 @@ function db_fetch_data($link, $sql, $data = [])
     return $result;
 }
 
-//Добавление новой записи в БД
-function db_insert_data($link, $sql, $data = [])
+/**
+ * Безопасное добавление записей в БД
+ *
+ * @param mysqli $link Объект, представляющий подключение к серверу MySQL
+ * @param string $sql Запрос к БД
+ * @param array $data Данные
+ *
+ * @return ?int
+ */
+function db_insert_data(mysqli $link, string $sql, array $data = []): ?int
 {
     $stmt = db_get_prepare_stmt($link, $sql, $data);
     $result = mysqli_stmt_execute($stmt);
+
     if ($result) {
         $result = mysqli_insert_id($link);
     }
     return $result;
 }
 
-function price_format($number)
+/**
+ * Преобразование строки с ценой в необходимый формат
+ *
+ * @param float $number Цена
+ *
+ * @return string Отформатированная строка
+ */
+function price_format(float $number): string
 {
     return number_format(ceil($number), 0, ',', ' ');
 }
 
+//TODO: не используется
+/**
+ * @deprecated
+ */
 function interval_before_midnight()
 {
     return date_diff(date_create("now"), date_create("tomorrow midnight"));
 }
 
+//TODO: не используется
+/**
+ * @deprecated
+ */
 function check_time($interval, int $sec_time): bool
 {
     return ($interval->h * 60 * 60 + $interval->i * 60 + $interval->s <= $sec_time);
 }
 
-//Возвращает массив с категориями
+/**
+ * Возвращает категории из БД
+ *
+ * @param mysqli $link Объект, представляющий подключение к серверу MySQL
+ *
+ * @return array Записи из БД
+ */
 function get_categories(mysqli $link): array
 {
     $sql = "SELECT id, category_title FROM categories";
@@ -54,7 +92,13 @@ function get_categories(mysqli $link): array
     die();
 }
 
-//Возвращает массив с открытыми лотами
+/**
+ * Возвращает массив с открытыми лотами
+ *
+ * @param mysqli $link Объект, представляющий подключение к серверу MySQL
+ *
+ * @return array Записи из БД
+ */
 function get_lots(mysqli $link): array
 {
     $sql = "SELECT lots.id AS id, lot_title, lot_price_start, lot_image, category_title
@@ -75,11 +119,18 @@ function get_lots(mysqli $link): array
     die();
 }
 
-//Возвращает лот по его id
+/**
+ * Возвращает лот по его id
+ *
+ * @param mysqli $link Объект, представляющий подключение к серверу MySQL
+ * @param int $id ID лота
+ *
+ * @return array Записи из БД
+ */
 function get_lot_by_id(mysqli $link, int $id): ?array
 {
     $sql = "SELECT category_title, lot_title, lot_description, lot_price_start, lot_date_end, lot_image, lot_step,
-            MAX(bet_price) as bet_price, lots.id
+            MAX(bet_price) as bet_price, lots.id, lots.user_id
             FROM lots
             JOIN categories ON lots.category_id = categories.id
             LEFT JOIN bets ON lots.id = bets.lot_id
@@ -102,6 +153,14 @@ function get_lot_by_id(mysqli $link, int $id): ?array
     die();
 }
 
+/**
+ * Возвращает ставки по id пользователя
+ *
+ * @param mysqli $link Объект, представляющий подключение к серверу MySQL
+ * @param int $user_id ID пользователя
+ *
+ * @return ?array
+ */
 function get_bets_by_user_id(mysqli $link, int $user_id): ?array
 {
     $sql = "SELECT lots.id as lot_id, lots.lot_image, lots.lot_title, users.user_contacts, categories.category_title,
@@ -125,10 +184,18 @@ function get_bets_by_user_id(mysqli $link, int $user_id): ?array
     die();
 }
 
-function get_bets_by_lot_id(mysqli $link, $id)
+/**
+ * Возвращает ставки по id лота
+ *
+ * @param mysqli $link Объект, представляющий подключение к серверу MySQL
+ * @param int $user_id ID лота
+ *
+ * @return array
+ */
+function get_bets_by_lot_id(mysqli $link, int $id): array
 {
 
-    $sql = "SELECT users.user_name, bets.bet_price, bets.bet_date_create
+    $sql = "SELECT users.id AS user_id, users.user_name, bets.bet_price, bets.bet_date_create
             FROM bets
             JOIN users ON users.id = bets.user_id
             WHERE bets.lot_id = ?
@@ -143,6 +210,13 @@ function get_bets_by_lot_id(mysqli $link, $id)
     return [];
 }
 
+/**
+ *
+ * @param string $time_close
+ * @param $full_time
+ *
+ * @return string
+ */
 function interval_before_close(string $time_close, $full_time = false): string
 {
     $seconds_in_hour = 60 * 60;
@@ -166,6 +240,13 @@ function interval_before_close(string $time_close, $full_time = false): string
     return "$hours:$minutes";
 }
 
+/**
+ *
+ * @param string $moment
+ * @param int $limit_time_in_sec
+ *
+ * @return bool
+ */
 function check_time2(string $moment, int $limit_time_in_sec = null): bool
 {
     if (!$limit_time_in_sec) {
@@ -177,6 +258,12 @@ function check_time2(string $moment, int $limit_time_in_sec = null): bool
     return $seconds_before_close > 0 && $seconds_before_close <= $limit_time_in_sec;
 }
 
+/**
+ *
+ * @param string $date
+ *
+ * @return string
+ */
 function format_bet_date(string $date): string
 {
     $bet_date = '';
@@ -199,8 +286,11 @@ function format_bet_date(string $date): string
     return $bet_date;
 };
 
-
-function page_404() {
+/**
+ * Возврат заголовка 404
+ */
+function page_404()
+{
     header("Location: /404.php");
     exit();
 }

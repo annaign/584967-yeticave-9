@@ -4,7 +4,7 @@ declare (strict_types = 1);
 require_once './init.php';
 
 if (isset($_SESSION['user'])) {
-    header("location: /");
+    header('location: /');
     exit();
 }
 
@@ -15,8 +15,8 @@ $categories = get_categories($link);
 //массив ошибок при заполнении формы
 $access_errors = [];
 $errors_message = [
-    'email' => "Введите e-mail",
-    'password' => "Введите пароль",
+    'email' => 'Введите e-mail',
+    'password' => 'Введите пароль',
 ];
 
 // --- Получение данных из формы ---
@@ -55,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($user_db === null) {
             $access_errors['email'] = true;
-            $errors_message['email'] = "Этот email не зарегистрирован";
+            $errors_message['email'] = 'Этот email не зарегистрирован';
         } else {
             if (!password_verify($user['password'], $user_db['user_password'])) {
                 $access_errors['password'] = true;
-                $errors_message['password'] = "Неправильный пароль";
+                $errors_message['password'] = 'Неправильный пароль';
             } else {
                 //Данные пользователя подтверждены
                 $_SESSION['user'] = $user_db['id'];
@@ -92,7 +92,7 @@ $menu_general = include_template('./menu_general.php', [
 ]);
 
 $layout = include_template('./layout.php', [
-    'title' => "Вход",
+    'title' => 'Вход',
     'session_user' => $session_user,
     'menu' => $menu_general,
     'content' => $content,

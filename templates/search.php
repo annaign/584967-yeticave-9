@@ -22,8 +22,8 @@
                                     <span class="lot__amount"><?= $amount_value ?></span>
                                     <span class="lot__cost"><?= price_format($lot['bet_price'] !== NULL ? $lot['bet_price'] : $lot['lot_price_start']) ?><b class="rub">р</b></span>
                                 </div>
-                                <div class="lot__timer timer <?= check_time2($lot['lot_date_end'], 60 * 60) ? "timer--finishing" : "" ?>">
-                                    <?= interval_before_close($lot['lot_date_end'], true); ?>
+                                <div class="lot__timer timer <?= check_time2($lot['lot_date_end'], 60 * 60) ? 'timer--finishing' : '' ?>">
+                                    <?= interval_before_close($lot['lot_date_end'], true) ?>
                                 </div>
                             </div>
                         </div>
