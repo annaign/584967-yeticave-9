@@ -19,7 +19,7 @@ $lot_bets = get_bets_by_lot_id($link, $id);
 //массив ошибок при заполнении формы
 $bet_errors = [];
 $errors_message = [
-    'cost' => 'Введите вашу ставку',
+    'cost' => 'Введите вашу ставку, целое положительное число',
 ];
 $show_bet_form = $session_user['is_auth'] === 1;
 
