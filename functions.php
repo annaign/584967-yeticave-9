@@ -221,6 +221,9 @@ function interval_before_close(string $time_close, $full_time = false): string
 {
     $seconds_in_hour = 60 * 60;
     $seconds_before_close = strtotime($time_close) - time();
+    if ($seconds_before_close < 0) {
+        $seconds_before_close = 0;
+    }
 
     $hours = floor($seconds_before_close / $seconds_in_hour);
     $minutes = floor(($seconds_before_close % $seconds_in_hour) / 60);

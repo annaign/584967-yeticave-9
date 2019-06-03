@@ -29,7 +29,11 @@ if ($show_bet_form) {
     $bet_last_user = get_bets_by_lot_id($link, $id);
     $bet_last_user = $bet_last_user[0] ?? null;
 
-    if ($bet_last_user && $bet_last_user['user_id'] === $_SESSION['user'] || $lot_creator['user_id'] === $_SESSION['user']) {
+    if (
+        check_time2($lot_creator['lot_date_end']) ||
+        $bet_last_user && $bet_last_user['user_id'] === $_SESSION['user'] ||
+        $lot_creator['user_id'] === $_SESSION['user']
+    ) {
         $show_bet_form = false;
     }
 }
