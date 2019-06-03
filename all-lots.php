@@ -34,6 +34,17 @@ if (isset($_GET['category'])) {
         $category_all = db_fetch_data($link, $sql, [$category_search])[0] ?? null;
         $pages = (int)ceil($category_all['items_count'] / $items_on_page);
 
+        if (!$category_all) {
+            $counter = 0;
+            while ($counter < count($categories)) {
+                if ($categories[$counter]['id'] === $category_search) {
+                    $category_all['category_title'] = $categories[$counter]['category_title'];
+                    break;
+                }
+                $counter += 1;
+            }
+        }
+
         $sql = "SELECT lots.id,lots.lot_image, categories.category_title, lots.lot_title, lots.lot_price_start,
                 MAX(bets.bet_price) AS bet_price, lots.lot_date_end, lots.lot_date_create,  COUNT(DISTINCT bets.id) AS bets_sum
                 FROM lots
