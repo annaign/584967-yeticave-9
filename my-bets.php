@@ -4,8 +4,7 @@ declare (strict_types = 1);
 require_once './init.php';
 
 if (!isset($_SESSION['user'])) {
-    header('Location: /403.php');
-    exit();
+    page_403();
 }
 
 // --- Получение данных из БД ---
