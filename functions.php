@@ -291,6 +291,17 @@ function format_bet_date(string $date): string
  */
 function page_404()
 {
+    http_response_code(404);
     header("Location: /404.php");
+    exit();
+}
+
+/**
+ * Возврат заголовка 403
+ */
+function page_403()
+{
+    http_response_code(403);
+    header('Location: /403.php');
     exit();
 }
