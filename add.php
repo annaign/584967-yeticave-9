@@ -51,8 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_FILES['lot-img']) or $_FILES['lot-img']['tmp_name'] === "") {
         $lot_errors['lot-img'] = true;
     } else {
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($finfo, $_FILES['lot-img']['tmp_name']);
+        $file_type = mime_content_type($_FILES['lot-img']['tmp_name']);
 
         if ($file_type !== 'image/jpeg' && $file_type !== 'image/png') {
             $lot_errors['lot-img'] = true;
