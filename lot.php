@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_bet = $_POST;
 
     //проверка: ставка
-    $new_bet['cost'] = trim($new_bet['cost']);
+    $new_bet['cost'] = isset($new_bet['cost']) ? trim($new_bet['cost']) : '';
     if (!is_numeric($new_bet['cost'])) {
         $bet_errors['cost'] = true;
         $errors_message['cost'] = 'Введите число';

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST;
 
     //проверка: e-mail
-    $user['email'] = trim($user['email']);
+    $user['email'] = isset($user['email']) ? trim($user['email']) : '';
     if ($user['email'] === '') {
         $access_errors['email'] = true;
     } elseif (filter_var($user['email'], FILTER_VALIDATE_EMAIL) === false) {
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //проверка: пароль
-    $user['password'] = trim($user['password']);
+    $user['password'] = isset($user['password']) ? trim($user['password']) : '';
     if ($user['password'] === '') {
         $access_errors['password'] = true;
     }

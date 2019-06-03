@@ -30,19 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_lot = $_POST;
 
     //проверка: наименование лота lot_title
-    $new_lot['lot-name'] = trim($new_lot['lot-name']);
+    $new_lot['lot-name'] = isset($new_lot['lot-name']) ? trim($new_lot['lot-name']) : '';
     if ($new_lot['lot-name'] === '') {
         $lot_errors['lot-name'] = true;
     }
 
     //проверка: категория category_id
-    $new_lot['category'] = trim($new_lot['category']);
+    $new_lot['category'] = isset($new_lot['category']) ? trim($new_lot['category']) : '';
     if ($new_lot['category'] === '') {
         $lot_errors['category'] = true;
     }
 
     //проверка: описание лота lot_description
-    $new_lot['message'] = trim($new_lot['message']);
+    $new_lot['message'] = isset($new_lot['message']) ? trim($new_lot['message']) : '';
     if ($new_lot['message'] === '') {
         $lot_errors['message'] = true;
     }
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //проверка: начальная цена lot_price_start
-    $new_lot['lot-rate'] = trim($new_lot['lot-rate']);
+    $new_lot['lot-rate'] = isset($new_lot['lot-rate']) ? trim($new_lot['lot-rate']) : '';
     if (!is_numeric($new_lot['lot-rate'])) {
         $lot_errors['lot-rate'] = true;
     } else {
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //проверка: шаг ставки lot_step
-    $new_lot['lot-step'] = trim($new_lot['lot-step']);
+    $new_lot['lot-step'] = isset($new_lot['lot-step']) ? trim($new_lot['lot-step']) : '';
     if (!is_numeric($new_lot['lot-step'])) {
         $lot_errors['lot-step'] = true;
     } else {
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //проверка: дата завершения lot_date_end
-    $new_lot['lot-date'] = trim($new_lot['lot-date']);
+    $new_lot['lot-date'] = isset($new_lot['lot-date']) ? trim($new_lot['lot-date']) : '';
     if (!is_date_valid($new_lot['lot-date'])) {
         $lot_errors['lot-date'] = true;
     } elseif (new DateTime($new_lot['lot-date']) < new DateTime()) {

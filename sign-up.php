@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_user = $_POST;
 
     //проверка: e-mail
-    $new_user['email'] = trim($new_user['email']);
+    $new_user['email'] = isset($new_user['email']) ? trim($new_user['email']) : '';
     if ($new_user['email'] === '') {
         $registration_errors['email'] = true;
     } elseif (filter_var($new_user['email'], FILTER_VALIDATE_EMAIL) === false) {
@@ -41,19 +41,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //проверка: пароль
-    $new_user['password'] = trim($new_user['password']);
+    $new_user['password'] = isset($new_user['password']) ? trim($new_user['password']) : '';
     if ($new_user['password'] === '') {
         $registration_errors['password'] = true;
     }
 
     //проверка: имя
-    $new_user['name'] = trim($new_user['name']);
+    $new_user['name'] = isset($new_user['name']) ? trim($new_user['name']) : '';
     if ($new_user['name'] === '') {
         $registration_errors['name'] = true;
     }
 
     //проверка: контактные данные
-    $new_user['message'] = trim($new_user['message']);
+    $new_user['message'] = isset($new_user['message']) ? trim($new_user['message']) : '';
     if ($new_user['message'] === '') {
         $registration_errors['message'] = true;
     }
