@@ -6,11 +6,11 @@
         <?php foreach ($lots as $lot) : ?>
             <li class="lots__item lot">
                 <div class="lot__image">
-                    <img src="<?= $lot['lot_image'] ?>" width="350" height="260" alt="">
+                    <img src="<?= htmlspecialchars($lot['lot_image']) ?>" width="350" height="260" alt="">
                 </div>
                 <div class="lot__info">
                     <span class="lot__category"><?= htmlspecialchars($lot['category_title']) ?></span>
-                    <h3 class="lot__title"><a class="text-link" href="./lot.php?id=<?= $lot['id'] ?>"><?= htmlspecialchars($lot['lot_title']) ?></a></h3>
+                    <h3 class="lot__title"><a class="text-link" href="./lot.php?id=<?= htmlspecialchars($lot['id']) ?>"><?= htmlspecialchars($lot['lot_title']) ?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
