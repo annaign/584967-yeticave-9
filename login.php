@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user['email'] === '') {
         $access_errors['email'] = true;
     } elseif (filter_var($user['email'], FILTER_VALIDATE_EMAIL) === false) {
-        $registration_errors['email'] = true;
+        $access_errors['email'] = true;
         $errors_message['email'] = 'Введите email в правильном формате: name@domain.com';
     }
 
