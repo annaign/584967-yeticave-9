@@ -30,9 +30,7 @@ if (isset($_GET['category'])) {
         if ($current_page  === 0) {
             $current_page = 1;
         }
-        $current_page = (int)$current_page;
         $items_on_page = 9;
-        $items_on_page = (int)$items_on_page;
         $offset = ($current_page - 1) * $items_on_page;
         $category_all = db_fetch_data($link, $sql, [$category_search])[0] ?? null;
         $pages = (int)ceil($category_all['items_count'] / $items_on_page);
@@ -69,7 +67,6 @@ if (isset($_GET['category'])) {
         'lots' => $lots,
         'pages' => $pages,
         'current_page' => $current_page,
-        'items_on_page' => $items_on_page,
     ]);
 } else {
     page_404();

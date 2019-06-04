@@ -37,7 +37,6 @@ if (isset($_GET['search'])) {
             $current_page = 1;
         }
         $items_on_page = 9;
-        $items_on_page = (int)$items_on_page;
         $offset = ($current_page - 1) * $items_on_page;
         $items_all = count(db_fetch_data($link, $sql, [$new_search]));
         $pages = (int)ceil($items_all / $items_on_page);
@@ -64,7 +63,6 @@ if (isset($_GET['search'])) {
         'lots' => $lots,
         'pages' => $pages,
         'current_page' => $current_page,
-        'items_on_page' => $items_on_page,
     ]);
 } else {
     http_response_code(404);

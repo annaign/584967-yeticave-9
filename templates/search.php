@@ -39,7 +39,7 @@
             <?php $page_href = '/search.php?search=' . htmlspecialchars($new_search) . '&find=Найти&page=' ?>
             <li class="pagination-item pagination-item-prev">
                 <?php if ($current_page - 1 > 0) : ?>
-                    <a href="<?= $page_href . ($current_page - 1) . '&limit=' . htmlspecialchars($items_on_page) ?>">Назад</a>
+                    <a href="<?= $page_href . ($current_page - 1) ?>">Назад</a>
                 <?php else : ?>
                     <a>Назад</a>
                 <?php endif ?>
@@ -47,7 +47,7 @@
             <?php for ($page = 1; $page <= $pages; $page++) : ?>
                 <li class="pagination-item <?= $page === $current_page ? 'pagination-item-active' : '' ?>">
                     <?php if ($page !== $current_page) : ?>
-                        <a href="<?= $page_href . $page . '&limit=' . htmlspecialchars($items_on_page) ?>"><?= $page ?></a>
+                        <a href="<?= $page_href . $page ?>"><?= $page ?></a>
                     <?php else : ?>
                         <a><?= $page ?></a>
                     <?php endif ?>
@@ -55,7 +55,7 @@
             <?php endfor ?>
             <li class="pagination-item pagination-item-next">
                 <?php if ($current_page + 1 <= $pages) : ?>
-                    <a href="<?= $page_href . ($current_page + 1) . '&limit=' . htmlspecialchars($items_on_page) ?>">Вперед</a>
+                    <a href="<?= $page_href . ($current_page + 1) ?>">Вперед</a>
                 <?php else : ?>
                     <a>Вперед</a>
                 <?php endif ?>
