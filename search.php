@@ -4,8 +4,12 @@ declare (strict_types = 1);
 require_once './init.php';
 
 // --- Получение данных ---
-
 $categories = get_categories($link);
+
+// --- Сборка страницы с результатами поиска ---
+$menu_general = include_template('./menu_general.php', [
+    'categories' => $categories
+]);
 
 // --- Получение данных из формы ---
 
@@ -29,7 +33,10 @@ if (isset($_GET['search'])) {
 
         $current_page = $_GET['page'] ?? 1;
         $current_page = (int)$current_page;
-        $items_on_page = $_GET['limit'] ?? 9;
+        if ($current_page === 0) {
+            $current_page = 1;
+        }
+        $items_on_page = 9;
         $items_on_page = (int)$items_on_page;
         $offset = ($current_page - 1) * $items_on_page;
         $items_all = count(db_fetch_data($link, $sql, [$new_search]));
@@ -60,15 +67,24 @@ if (isset($_GET['search'])) {
         'items_on_page' => $items_on_page,
     ]);
 } else {
-    page_404();
+    http_response_code(404);
+
+    // --- Сборка главной страницы ---
+    $content = include_template('./404.php', []);
+
+    $layout = include_template('./layout.php', [
+        'title' => "404 Доступ к странице запрещен",
+        'session_user' => $session_user,
+        'menu' => $menu_general,
+        'content' => $content,
+        'categories' => $categories,
+    ]);
+
+    print($layout);
+    exit();
 }
 
 // --- Сборка страницы с результатами поиска ---
-
-$menu_general = include_template('./menu_general.php', [
-    'categories' => $categories
-]);
-
 $layout = include_template('./layout.php', [
     'title' => 'Результаты поиска ',
     'session_user' => $session_user,

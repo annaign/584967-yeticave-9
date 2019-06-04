@@ -4,16 +4,53 @@ declare (strict_types = 1);
 require_once './init.php';
 
 // --- Получение данных ---
-
 $categories = get_categories($link);
+
+// --- Сборка страницы с лотом ---
+$menu_general = include_template('./menu_general.php', [
+    'categories' => $categories
+]);
 
 if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
 } else {
-    page_404();
+    http_response_code(404);
+
+    // --- Сборка главной страницы ---
+    $content = include_template('./404.php', []);
+
+    $layout = include_template('./layout.php', [
+        'title' => "404 Доступ к странице запрещен",
+        'session_user' => $session_user,
+        'menu' => $menu_general,
+        'content' => $content,
+        'categories' => $categories,
+    ]);
+
+    print($layout);
+    exit();
 }
 
 $lot = get_lot_by_id($link, $id);
+
+if ($lot['id'] === NULL) {
+    http_response_code(404);
+
+    // --- Сборка главной страницы ---
+    $content = include_template('./404.php', []);
+
+    $layout = include_template('./layout.php', [
+        'title' => "404 Доступ к странице запрещен",
+        'session_user' => $session_user,
+        'menu' => $menu_general,
+        'content' => $content,
+        'categories' => $categories,
+    ]);
+
+    print($layout);
+    exit();
+}
+
 $lot_bets = get_bets_by_lot_id($link, $id);
 
 //массив ошибок при заполнении формы
@@ -48,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_bet['cost'] = isset($new_bet['cost']) ? trim($new_bet['cost']) : '';
     if (!is_numeric($new_bet['cost'])) {
         $bet_errors['cost'] = true;
-        $errors_message['cost'] = 'Введите число';
+        $errors_message['cost'] = 'Введите целое положительное число';
     } else {
         $new_bet['cost'] = (int)($new_bet['cost']);
         $min_price = ($lot['bet_price'] !== null) ? $lot['bet_price'] + $lot['lot_step'] : $lot['lot_price_start'] + $lot['lot_step'];
@@ -104,11 +141,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // --- Сборка страницы с лотом ---
-
-$menu_general = include_template('./menu_general.php', [
-    'categories' => $categories
-]);
-
 $layout = include_template('./layout.php', [
     'title' => $lot['lot_title'],
     'session_user' => $session_user,

@@ -141,9 +141,6 @@ function get_lot_by_id(mysqli $link, int $id): ?array
     $lot = $lot[0] ?? NULL;
 
     if ($lot !== false) {
-        if ($lot['id'] === NULL) {
-            page_404();
-        }
         return $lot;
     }
 
@@ -288,23 +285,3 @@ function format_bet_date(string $date): string
     }
     return $bet_date;
 };
-
-/**
- * Возврат заголовка 404
- */
-function page_404()
-{
-    http_response_code(404);
-    header("Location: /404.php");
-    exit();
-}
-
-/**
- * Возврат заголовка 403
- */
-function page_403()
-{
-    http_response_code(403);
-    header('Location: /403.php');
-    exit();
-}

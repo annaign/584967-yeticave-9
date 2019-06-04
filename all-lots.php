@@ -4,7 +4,6 @@ declare (strict_types = 1);
 require_once './init.php';
 
 // --- Получение данных ---
-
 $categories = get_categories($link);
 
 // --- Получение данных из формы ---
@@ -28,7 +27,11 @@ if (isset($_GET['category'])) {
 
         $current_page = $_GET['page'] ?? 1;
         $current_page = (int)$current_page;
-        $items_on_page = $_GET['limit'] ?? 9;
+        if ($current_page  === 0) {
+            $current_page = 1;
+        }
+        $current_page = (int)$current_page;
+        $items_on_page = 9;
         $items_on_page = (int)$items_on_page;
         $offset = ($current_page - 1) * $items_on_page;
         $category_all = db_fetch_data($link, $sql, [$category_search])[0] ?? null;

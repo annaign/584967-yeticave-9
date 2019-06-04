@@ -3,9 +3,6 @@
 declare (strict_types = 1);
 require_once './init.php';
 
-$user_name = 'User';
-$is_auth = rand(0, 1);
-
 // --- Получение данных ---
 
 $categories = get_categories($link);

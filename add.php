@@ -3,13 +3,29 @@
 declare (strict_types = 1);
 require_once './init.php';
 
-if (!isset($_SESSION['user'])) {
-    page_403();
-}
-
 // --- Получение данных из БД ---
-
 $categories = get_categories($link);
+$menu_general = include_template('./menu_general.php', [
+    'categories' => $categories
+]);
+
+if (!isset($_SESSION['user'])) {
+    http_response_code(403);
+    // --- Сборка главной страницы ---
+
+    $content = include_template('./403.php', []);
+
+    $layout = include_template('./layout.php', [
+        'title' => "403 Доступ к странице запрещен",
+        'session_user' => $session_user,
+        'menu' => $menu_general,
+        'content' => $content,
+        'categories' => $categories,
+    ]);
+
+    print($layout);
+    exit();
+}
 
 //массив ошибок при заполнении формы
 $lot_errors = [];
@@ -18,8 +34,8 @@ $errors_message = [
     'category' => 'Выберите категорию',
     'message' => 'Напишите описание лота',
     'lot-img' => 'Не загружен файл',
-    'lot-rate' => 'Введите начальную цену',
-    'lot-step' => 'Введите шаг ставки',
+    'lot-rate' => 'Введите начальную цену, целое положительное число',
+    'lot-step' => 'Введите шаг ставки, целое положительное число',
     'lot-date' => 'Введите дату завершения торгов',
 ];
 
@@ -151,11 +167,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // --- Сборка страницы с лотом ---
-
-$menu_general = include_template('./menu_general.php', [
-    'categories' => $categories
-]);
-
 $layout = include_template('./layout.php', [
     'title' => 'Добавление лота',
     'add_lot_style' => '<link href="../css/flatpickr.min.css" rel="stylesheet">',
